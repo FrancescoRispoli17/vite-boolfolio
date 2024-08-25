@@ -11,7 +11,8 @@ import Main from './components/Main.vue';
 </script>
 
 <template>
-<Main></Main>
+  <Header />
+  <router-view></router-view>
 </template>
 
 <style scoped lang="scss">
