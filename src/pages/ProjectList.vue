@@ -11,14 +11,16 @@
                 title: 'Projects',
                 projects:[],
                 postAPIpage: 1,
-                lastPage: 0,            }
+                lastPage: 0,
+                title:""
+                }
         },
         methods:{
             getProjects(){
                 const result = axios
                 .get('http://127.0.0.1:8000/api/project', {
                     params:{
-                        page:this.postAPIpage
+                        page:this.postAPIpage,
                     }
                 })
                 .then((response)=> {
@@ -31,9 +33,24 @@
                 })
                 .catch((error) =>console.log(error));
             },
+            filter(){
+                const result = axios
+                .get('http://127.0.0.1:8000/api/project', {
+                    params:{
+                        title:this.title,
+                    }
+                })
+                .then((response)=> {
+                    console.log(this.title);
+                    console.log(response);
+                    this.projects = response.data.results.data;
+                  
+                })
+                .catch((error) =>console.log(error));
+            },
             changePage(page){
                 if(page < 1)
-                    page=1
+                    page=1;
                 else if(page>this.lastPage)
                     page=this.lastPage;
                 this.postAPIpage=page;
@@ -49,6 +66,13 @@
 <template>
     <div class="container py-5">
         <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control w-25" v-model="title">
+                </div>
+                <button class="btn btn-primary" @click="filter()">Cerca</button>
+            </div>
             <Project v-for="project in projects"
                 :project="project"
                 :title="project.title"
