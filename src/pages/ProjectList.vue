@@ -21,6 +21,7 @@
                 .get('http://127.0.0.1:8000/api/project', {
                     params:{
                         page:this.postAPIpage,
+                        title:this.title
                     }
                 })
                 .then((response)=> {
@@ -30,21 +31,6 @@
                     } else {
                         console.log('qualcosa è andato storto')
                     }
-                })
-                .catch((error) =>console.log(error));
-            },
-            filter(){
-                const result = axios
-                .get('http://127.0.0.1:8000/api/project', {
-                    params:{
-                        title:this.title,
-                    }
-                })
-                .then((response)=> {
-                    console.log(this.title);
-                    console.log(response);
-                    this.projects = response.data.results.data;
-                  
                 })
                 .catch((error) =>console.log(error));
             },
@@ -69,9 +55,9 @@
             <div class="col-12">
                 <div class="mb-3">
                     <label class="form-label">Title</label>
-                    <input type="text" class="form-control w-25" v-model="title">
+                    <input type="text" class="form-control w-25"  @input="getProjects" v-model="title">
                 </div>
-                <button class="btn btn-primary" @click="filter()">Cerca</button>
+                <button class="btn btn-primary" @click="getProjects()">Cerca</button>
             </div>
             <Project v-for="project in projects"
                 :project="project"
